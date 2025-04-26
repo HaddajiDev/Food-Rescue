@@ -12,7 +12,7 @@ const useDataStore = create((set, get) => ({
       const formData = new FormData()
       formData.append("file", file)
 
-      const result = await instanceAxios.post(`/data?mode=${mode}`, formData)
+      const result = await instanceAxios.post(`/get/data?mode=${mode}`, formData)
       set({ detectedIngredients: result.data.detectedIngredients })
       set({ recipes: result.data.recipes })
       set({ advice: result.data.advice })

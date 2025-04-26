@@ -4,10 +4,13 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 
-app.use('/', require('./router/pics'));
+app.use('/get', require('./router/pics'));
+app.get("/", (req, res) => res.send("Working"));
 
 
 app.listen(2000, (err) => {
