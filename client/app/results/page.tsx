@@ -18,17 +18,15 @@ import {
   Heart,
 } from "lucide-react"
 import { Header } from "@/components/header"
-import axios from 'axios'
-import Image from "next/image"
+import { FeedbackContainer } from "@/components/feedback-container"
 
 export default function ResultsPage() {
   const [activeTab, setActiveTab] = useState("recipes")
   const [isLoaded, setIsLoaded] = useState(false)
 
+  // Mock data for demo purposes
   const foodImage = "/placeholder.svg?height=300&width=400"
-  const detectedIngredients = ["Tomatoes", "Onions", "Bell Peppers", "Zucchini", "Eggplant"];
-
-
+  const detectedIngredients = ["Tomatoes", "Onions", "Bell Peppers", "Zucchini", "Eggplant"]
 
   const recipes = [
     {
@@ -132,78 +130,6 @@ export default function ResultsPage() {
         "Serve with crusty bread.",
       ],
     },
-    {
-      id: 4,
-      title: "Couscous",
-      image: "/placeholder.svg?height=250&width=400",
-      time: "35 mins",
-      servings: 6,
-      difficulty: "Easy",
-      calories: 220,
-      tags: ["Mediterranean", "Soup", "Healthy"],
-      description: "A hearty vegetable soup that's perfect for using up vegetables that are starting to wilt.",
-      ingredients: [
-        "2 tomatoes, diced",
-        "1 onion, chopped",
-        "1 bell pepper, chopped",
-        "1 zucchini, diced",
-        "1/2 eggplant, diced",
-        "2 cloves garlic, minced",
-        "4 cups vegetable broth",
-        "1 can (15 oz) chickpeas, drained",
-        "1 tsp dried oregano",
-        "1 tsp dried basil",
-        "2 tbsp olive oil",
-        "Salt and pepper to taste",
-        "Fresh parsley for garnish",
-      ],
-      instructions: [
-        "Heat olive oil in a large pot over medium heat.",
-        "Add onions and garlic, sauté until soft.",
-        "Add bell peppers, zucchini, and eggplant. Cook for 5 minutes.",
-        "Add tomatoes, vegetable broth, chickpeas, oregano, and basil.",
-        "Bring to a boil, then reduce heat and simmer for 20 minutes.",
-        "Season with salt and pepper to taste.",
-        "Garnish with fresh parsley before serving.",
-        "Serve with crusty bread.",
-      ],
-    },
-    {
-      id: 5,
-      title: "Rice with chiken",
-      image: "/placeholder.svg?height=250&width=400",
-      time: "35 mins",
-      servings: 6,
-      difficulty: "Easy",
-      calories: 220,
-      tags: ["Mediterranean", "Soup", "Healthy"],
-      description: "A hearty vegetable soup that's perfect for using up vegetables that are starting to wilt.",
-      ingredients: [
-        "2 tomatoes, diced",
-        "1 onion, chopped",
-        "1 bell pepper, chopped",
-        "1 zucchini, diced",
-        "1/2 eggplant, diced",
-        "2 cloves garlic, minced",
-        "4 cups vegetable broth",
-        "1 can (15 oz) chickpeas, drained",
-        "1 tsp dried oregano",
-        "1 tsp dried basil",
-        "2 tbsp olive oil",
-        "Salt and pepper to taste",
-        "Fresh parsley for garnish",
-      ],
-      instructions: [
-        "Heat olive oil in a large pot over medium heat.",
-        "Add onions and garlic, sauté until soft.",
-        "Add bell peppers, zucchini, and eggplant. Cook for 5 minutes.",
-        "Add tomatoes, vegetable broth, chickpeas, oregano, and basil.",
-        "Bring to a boil, then reduce heat and simmer for 20 minutes.",
-        "Season with salt and pepper to taste.",
-        "Garnish with fresh parsley before serving.",
-        "Serve with crusty bread.",
-      ],
-    },
   ]
 
   const advice = [
@@ -242,51 +168,6 @@ export default function ResultsPage() {
     },
   ]
 
-
-
-  const getImage = async(food : string, orientation: string) => {
-    const result = await axios.get(`https://api.unsplash.com/search/photos?query=${food}&client_id=pxlmlb-GuT3JdOD07V4YMfG3OjQZQ8ursRI-Nge3_Mc&orientation=${orientation}`);
-    return result.data.results[0]?.urls?.regular
-  }
-  const [imageMap, setImageMap] = useState<Record<string, string>>({});
-  
-  useEffect(() => {
-    const fetchImages = async () => {
-      const titles = [...new Set(recipes.map((r) => r.title))];
-      const newImageMap: Record<string, string> = {};
-      await Promise.all(
-        titles.map(async (title: any) => {
-          try {
-            const img = await getImage(title, "landscape");
-            newImageMap[title] = img;
-          } catch (error) {
-            console.log(error)
-            newImageMap[title] = "/placeholder.svg";
-          }
-        })
-      );
-
-      setImageMap(newImageMap);
-    };
-
-    fetchImages();
-  }, []);
-
-  const [imgHead, setHeadimg] = useState("")
-  useEffect(() => {
-    const fetchHeader = async () => {
-      const prompt = detectedIngredients[0]
-      try {
-        const img = await getImage(prompt, "landscape");
-        setHeadimg(img);
-      } catch (error) {
-        setHeadimg("/placeholder.svg");
-      }
-    }
-    fetchHeader();
-  }, [detectedIngredients]);
-
-
   const [selectedRecipe, setSelectedRecipe] = useState(recipes[0])
   const [savedRecipes, setSavedRecipes] = useState<number[]>([])
   const [likedRecipes, setLikedRecipes] = useState<number[]>([])
@@ -324,7 +205,7 @@ export default function ResultsPage() {
           <div className="flex flex-col md:flex-row gap-6">
             <div className="md:w-1/3">
               <div className="rounded-lg overflow-hidden shadow-md transform transition-transform hover:scale-[1.02] duration-300">
-                <img src={imgHead || "/placeholder.svg"} alt="Uploaded food" className="w-full h-auto" />
+                <img src={foodImage || "/placeholder.svg"} alt="Uploaded food" className="w-full h-auto" />
               </div>
             </div>
             <div className="md:w-2/3">
@@ -357,11 +238,11 @@ export default function ResultsPage() {
 
         <Tabs defaultValue="recipes" className="mb-8" onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-2 mb-8">
-            <TabsTrigger value="recipes" className="">
+            <TabsTrigger value="recipes" className="text-base">
               <ChefHat className="mr-2 h-4 w-4" />
               Recipes
             </TabsTrigger>
-            <TabsTrigger value="advice" className="">
+            <TabsTrigger value="advice" className="text-base">
               <Leaf className="mr-2 h-4 w-4" />
               Food Waste Advice
             </TabsTrigger>
@@ -388,7 +269,7 @@ export default function ResultsPage() {
                       <div className="flex gap-4">
                         <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0 shadow-sm">
                           <img
-                            src={imageMap[recipe.title]}
+                            src={recipe.image || "/placeholder.svg"}
                             alt={recipe.title}
                             className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                           />
@@ -419,7 +300,7 @@ export default function ResultsPage() {
                 <Card className="overflow-hidden border border-border shadow-lg">
                   <div className="relative h-64 overflow-hidden">
                     <img
-                      src={imageMap[selectedRecipe.title]}
+                      src={selectedRecipe.image || "/placeholder.svg"}
                       alt={selectedRecipe.title}
                       className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                     />
@@ -457,7 +338,7 @@ export default function ResultsPage() {
                     </div>
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                       <div className="flex flex-wrap gap-2">
-                        {selectedRecipe.tags.map((tag: any, index: any) => (
+                        {selectedRecipe.tags.map((tag, index) => (
                           <span
                             key={index}
                             className="text-xs px-2 py-1 bg-white/20 backdrop-blur-sm text-white rounded-full"
@@ -513,7 +394,7 @@ export default function ResultsPage() {
                         Ingredients
                       </h3>
                       <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        {selectedRecipe.ingredients.map((ingredient: any, index: any) => (
+                        {selectedRecipe.ingredients.map((ingredient, index) => (
                           <li key={index} className="flex items-start gap-2 group">
                             <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 group-hover:scale-150 transition-transform duration-300"></div>
                             <span className="group-hover:text-primary transition-colors duration-300">
@@ -532,7 +413,7 @@ export default function ResultsPage() {
                         Instructions
                       </h3>
                       <ol className="space-y-4">
-                        {selectedRecipe.instructions.map((instruction: any, index: any) => (
+                        {selectedRecipe.instructions.map((instruction, index) => (
                           <li key={index} className="flex gap-3 group">
                             <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-medium group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
                               {index + 1}
@@ -598,6 +479,9 @@ export default function ResultsPage() {
           </TabsContent>
         </Tabs>
       </main>
+
+      {/* Feedback Container */}
+      <FeedbackContainer />
 
       {/* Footer */}
       <footer className="bg-muted/50 dark:bg-muted/20 py-6 border-t border-border">
