@@ -4,8 +4,10 @@ import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { UploadIcon, Camera, Loader2, X } from "lucide-react"
+import { UploadIcon, Camera, Loader2, X, Salad, UtensilsCrossed } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import useDataStore from "../store/DataStore";
 
 export function Upload() {
   const router = useRouter()
@@ -14,14 +16,17 @@ export function Upload() {
   const [preview, setPreview] = useState<string | null>(null)
   const [isCameraActive, setIsCameraActive] = useState(false)
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null)
+  const [uploadMode, setUploadMode] = useState<"ingredients" | "leftovers">("ingredients")
   const fileInputRef = useRef<HTMLInputElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  
+
+  const { handleData }: any = useDataStore();
+
   useEffect(() => {
     return () => {
       if (cameraStream) {
-        cameraStream.getTracks().forEach(track => track.stop())
+        cameraStream.getTracks().forEach((track) => track.stop())
       }
     }
   }, [cameraStream])
@@ -29,7 +34,7 @@ export function Upload() {
   useEffect(() => {
     if (isCameraActive && videoRef.current && cameraStream) {
       videoRef.current.srcObject = cameraStream
-      videoRef.current.play().catch(err => {
+      videoRef.current.play().catch((err) => {
         console.error("Error playing video:", err)
         alert("Failed to start camera preview.")
         stopCamera()
@@ -63,7 +68,7 @@ export function Upload() {
     }
   }
 
-  const simulateUpload = (file: File) => {
+  const simulateUpload = async(file: File) => {
     setIsUploading(true)
 
     const reader = new FileReader()
@@ -71,23 +76,22 @@ export function Upload() {
       setPreview(reader.result as string)
     }
     reader.readAsDataURL(file)
-
-    setTimeout(() => {
-      setIsUploading(false)
-      router.push("/results")
-    }, 2000)
+    await handleData(file);
+    sessionStorage.setItem("uploadMode", uploadMode)
+    setIsUploading(false)
+    router.push("/results")
   }
 
   const activateCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { 
-          facingMode: 'environment',
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: "environment",
           width: { ideal: 1280 },
-          height: { ideal: 720 }
-        } 
+          height: { ideal: 720 },
+        },
       })
-      
+
       setCameraStream(stream)
       setIsCameraActive(true)
     } catch (err) {
@@ -100,36 +104,46 @@ export function Upload() {
     if (videoRef.current && canvasRef.current) {
       const video = videoRef.current
       const canvas = canvasRef.current
-      
+
       canvas.width = video.videoWidth
       canvas.height = video.videoHeight
-      
-      const context = canvas.getContext('2d')
+
+      const context = canvas.getContext("2d")
       if (context) {
         context.drawImage(video, 0, 0, canvas.width, canvas.height)
-        
-        canvas.toBlob((blob) => {
-          if (blob) {
-            const file = new File([blob], "camera-photo.jpg", { type: "image/jpeg" })            
-            stopCamera()            
-            simulateUpload(file)
-          }
-        }, 'image/jpeg', 0.95)
+
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              const file = new File([blob], "camera-photo.jpg", { type: "image/jpeg" })
+              stopCamera()
+              simulateUpload(file)
+            }
+          },
+          "image/jpeg",
+          0.95,
+        )
       }
     }
   }
 
   const stopCamera = () => {
     if (cameraStream) {
-      cameraStream.getTracks().forEach(track => track.stop())
+      cameraStream.getTracks().forEach((track) => track.stop())
       setCameraStream(null)
     }
     setIsCameraActive(false)
   }
 
+  const getUploadModeText = () => {
+    return uploadMode === "ingredients"
+      ? "Upload a clear image of your ingredients for recipe suggestions."
+      : "Upload a photo of your leftover meal to get creative reuse ideas."
+  }
+
   return (
     <section className="container mx-auto px-4 py-16 md:py-24">
-      <div className="text-center mb-12 animate-slide-up">
+      <div className="text-center mb-8 animate-slide-up">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
           Upload Your <span className="gradient-text">Food Photo</span>
         </h2>
@@ -140,6 +154,23 @@ export function Upload() {
       </div>
 
       <div className="max-w-3xl mx-auto">
+        <Tabs
+          value={uploadMode}
+          onValueChange={(value) => setUploadMode(value as "ingredients" | "leftovers")}
+          className="mb-6"
+        >
+          <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
+            <TabsTrigger value="ingredients" className="">
+              <Salad className="mr-2 h-4 w-4" />
+              Ingredients
+            </TabsTrigger>
+            <TabsTrigger value="leftovers" className="">
+              <UtensilsCrossed className="mr-2 h-4 w-4" />
+              Leftovers
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+
         <Card
           className={`p-8 border-2 border-dashed ${
             isDragging ? "border-primary bg-primary/5 dark:bg-primary/10" : "border-border"
@@ -151,13 +182,7 @@ export function Upload() {
           {isCameraActive ? (
             <div className="flex flex-col items-center">
               <div className="relative w-full max-w-md mb-6">
-                <video 
-                  ref={videoRef} 
-                  autoPlay 
-                  playsInline 
-                  muted
-                  className="w-full h-auto rounded-lg"
-                />
+                <video ref={videoRef} autoPlay playsInline muted className="w-full h-auto rounded-lg" />
                 <canvas ref={canvasRef} className="hidden" />
               </div>
               <div className="flex gap-4">
@@ -178,12 +203,16 @@ export function Upload() {
           ) : !preview ? (
             <div className="flex flex-col items-center justify-center py-12">
               <div className="w-20 h-20 bg-primary/10 dark:bg-primary/20 rounded-full flex items-center justify-center mb-6">
-                <UploadIcon className="h-10 w-10 text-primary" />
+                {uploadMode === "ingredients" ? (
+                  <Salad className="h-10 w-10 text-primary" />
+                ) : (
+                  <UtensilsCrossed className="h-10 w-10 text-primary" />
+                )}
               </div>
-              <h3 className="text-xl font-semibold mb-2">Drag & Drop Your Food Photo</h3>
-              <p className="text-muted-foreground text-center mb-6 max-w-md">
-                Upload a clear image of your ingredients or leftovers for the best results
-              </p>
+              <h3 className="text-xl font-semibold mb-2">
+                {uploadMode === "ingredients" ? "Upload Your Ingredients" : "Upload Your Leftovers"}
+              </h3>
+              <p className="text-muted-foreground text-center mb-6 max-w-md">{getUploadModeText()}</p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button className="bg-primary hover:bg-primary/90 text-primary-foreground relative overflow-hidden group">
                   <span className="absolute inset-0 w-full h-full transition-all duration-300 scale-x-0 transform group-hover:scale-x-100 group-hover:bg-white/10"></span>
@@ -197,8 +226,8 @@ export function Upload() {
                     ref={fileInputRef}
                   />
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="border-primary text-primary hover:bg-primary/10"
                   onClick={activateCamera}
                 >

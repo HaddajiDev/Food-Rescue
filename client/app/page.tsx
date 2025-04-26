@@ -4,6 +4,7 @@ import { HowItWorks } from "@/components/how-it-works"
 import { Footer } from "@/components/footer"
 import { Header } from "@/components/header"
 import { PricingPlans } from "@/components/pricing-plans"
+import { SavingsCounter } from "@/components/savings-counter"
 
 export default function Home() {
   return (
@@ -36,7 +37,7 @@ export default function Home() {
             <div className="md:w-1/2 animate-fade-in">
               <div className="relative rounded-2xl overflow-hidden shadow-xl">
                 <img
-                  src="/placeholder.svg?height=400&width=600"
+                  src="https://videos.openai.com/vg-assets/assets%2Ftask_01jsmxwq4ef99tjp3xjqv9qdqp%2Fimg_0.webp?st=2025-04-26T11%3A45%3A39Z&se=2025-05-02T12%3A45%3A39Z&sks=b&skt=2025-04-26T11%3A45%3A39Z&ske=2025-05-02T12%3A45%3A39Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=8ebb0df1-a278-4e2e-9c20-f2d373479b3a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=f5lrc27MKga4b1a5zYctdSjIjCen9NRYp3yCGLrmgLk%3D&az=oaivgprodscus"
                   alt="Food waste reduction concept"
                   className="w-full h-auto"
                 />
@@ -53,8 +54,12 @@ export default function Home() {
         </div>
       </div>
 
+      <SavingsCounter />
+
       {/* Upload Section */}
       <Upload />
+
+      
 
       {/* Features Section */}
       <Features />

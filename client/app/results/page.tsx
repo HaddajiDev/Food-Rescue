@@ -16,122 +16,154 @@ import {
   Flame,
   Leaf,
   Heart,
+  Recycle
 } from "lucide-react"
 import { Header } from "@/components/header"
 import { FeedbackContainer } from "@/components/feedback-container"
+import useDataStore from "../../store/DataStore";
+import axios from "axios"
+import Link from "next/link"
+
+interface Recipe {
+  id: number;
+  title: string;
+  time: string;
+  servings: string;
+  difficulty: string;
+  calories: string;
+  tags: string[];
+  description: string;
+  ingredients: string[];
+  instructions: string[];
+}
+
+interface Advice {
+  title: string;
+  content: string[];
+}
+
+
 
 export default function ResultsPage() {
   const [activeTab, setActiveTab] = useState("recipes")
   const [isLoaded, setIsLoaded] = useState(false)
 
-  // Mock data for demo purposes
+  const detectedIngredients = useDataStore((state : any) => state.detectedIngredients);
+  console.log(detectedIngredients);
   const foodImage = "/placeholder.svg?height=300&width=400"
-  const detectedIngredients = ["Tomatoes", "Onions", "Bell Peppers", "Zucchini", "Eggplant"]
+  // const detectedIngredients = ["Tomatoes", "Onions", "Bell Peppers", "Zucchini", "Eggplant"]
 
-  const recipes = [
-    {
-      id: 1,
-      title: "Ratatouille",
-      image: "/placeholder.svg?height=250&width=400",
-      time: "45 mins",
-      servings: 4,
-      difficulty: "Medium",
-      calories: 320,
-      tags: ["Vegetarian", "French", "Healthy"],
-      description: "A classic French vegetable stew that's perfect for using up leftover vegetables.",
-      ingredients: [
-        "2 large tomatoes, diced",
-        "1 medium onion, sliced",
-        "1 red bell pepper, sliced",
-        "1 zucchini, sliced",
-        "1 small eggplant, sliced",
-        "3 cloves garlic, minced",
-        "2 tbsp olive oil",
-        "1 tsp dried herbs de Provence",
-        "Salt and pepper to taste",
-      ],
-      instructions: [
-        "Preheat oven to 375°F (190°C).",
-        "Heat olive oil in a large skillet over medium heat. Add onions and garlic, sauté until soft.",
-        "Add bell peppers and cook for 5 minutes.",
-        "In a baking dish, arrange the vegetables in alternating layers.",
-        "Drizzle with olive oil and sprinkle with herbs, salt, and pepper.",
-        "Cover with foil and bake for 25 minutes.",
-        "Remove foil and bake for another 15 minutes until vegetables are tender.",
-        "Serve warm as a side dish or main course with crusty bread.",
-      ],
-    },
-    {
-      id: 2,
-      title: "Vegetable Stir Fry",
-      image: "/placeholder.svg?height=250&width=400",
-      time: "20 mins",
-      servings: 2,
-      difficulty: "Easy",
-      calories: 280,
-      tags: ["Quick", "Asian", "Low-Calorie"],
-      description: "A quick and healthy stir fry that's perfect for using up vegetables before they spoil.",
-      ingredients: [
-        "1 bell pepper, sliced",
-        "1 zucchini, sliced",
-        "1 small eggplant, diced",
-        "1 onion, sliced",
-        "2 cloves garlic, minced",
-        "1 tbsp soy sauce",
-        "1 tbsp vegetable oil",
-        "1 tsp sesame oil",
-        "1 tsp ginger, grated",
-        "Red pepper flakes to taste",
-      ],
-      instructions: [
-        "Heat vegetable oil in a wok or large skillet over high heat.",
-        "Add onions and garlic, stir fry for 1 minute.",
-        "Add eggplant and cook for 3 minutes.",
-        "Add bell peppers and zucchini, stir fry for 2 minutes.",
-        "Add soy sauce, ginger, and red pepper flakes.",
-        "Cook for another 2 minutes until vegetables are tender-crisp.",
-        "Drizzle with sesame oil before serving.",
-        "Serve over rice or noodles.",
-      ],
-    },
-    {
-      id: 3,
-      title: "Mediterranean Vegetable Soup",
-      image: "/placeholder.svg?height=250&width=400",
-      time: "35 mins",
-      servings: 6,
-      difficulty: "Easy",
-      calories: 220,
-      tags: ["Mediterranean", "Soup", "Healthy"],
-      description: "A hearty vegetable soup that's perfect for using up vegetables that are starting to wilt.",
-      ingredients: [
-        "2 tomatoes, diced",
-        "1 onion, chopped",
-        "1 bell pepper, chopped",
-        "1 zucchini, diced",
-        "1/2 eggplant, diced",
-        "2 cloves garlic, minced",
-        "4 cups vegetable broth",
-        "1 can (15 oz) chickpeas, drained",
-        "1 tsp dried oregano",
-        "1 tsp dried basil",
-        "2 tbsp olive oil",
-        "Salt and pepper to taste",
-        "Fresh parsley for garnish",
-      ],
-      instructions: [
-        "Heat olive oil in a large pot over medium heat.",
-        "Add onions and garlic, sauté until soft.",
-        "Add bell peppers, zucchini, and eggplant. Cook for 5 minutes.",
-        "Add tomatoes, vegetable broth, chickpeas, oregano, and basil.",
-        "Bring to a boil, then reduce heat and simmer for 20 minutes.",
-        "Season with salt and pepper to taste.",
-        "Garnish with fresh parsley before serving.",
-        "Serve with crusty bread.",
-      ],
-    },
-  ]
+  const recipes = useDataStore((state : any) => state.recipes);
+  // const recipes = [
+  //   {
+  //     id: 1,
+  //     title: "Ratatouille",
+  //     image: "/placeholder.svg?height=250&width=400",
+  //     time: "45 mins",
+  //     servings: 4,
+  //     difficulty: "Medium",
+  //     calories: 320,
+  //     tags: ["Vegetarian", "French", "Healthy"],
+  //     description: "A classic French vegetable stew that's perfect for using up leftover vegetables.",
+  //     ingredients: [
+  //       "2 large tomatoes, diced",
+  //       "1 medium onion, sliced",
+  //       "1 red bell pepper, sliced",
+  //       "1 zucchini, sliced",
+  //       "1 small eggplant, sliced",
+  //       "3 cloves garlic, minced",
+  //       "2 tbsp olive oil",
+  //       "1 tsp dried herbs de Provence",
+  //       "Salt and pepper to taste",
+  //     ],
+  //     instructions: [
+  //       "Preheat oven to 375°F (190°C).",
+  //       "Heat olive oil in a large skillet over medium heat. Add onions and garlic, sauté until soft.",
+  //       "Add bell peppers and cook for 5 minutes.",
+  //       "In a baking dish, arrange the vegetables in alternating layers.",
+  //       "Drizzle with olive oil and sprinkle with herbs, salt, and pepper.",
+  //       "Cover with foil and bake for 25 minutes.",
+  //       "Remove foil and bake for another 15 minutes until vegetables are tender.",
+  //       "Serve warm as a side dish or main course with crusty bread.",
+  //     ],
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Vegetable Stir Fry",
+  //     image: "/placeholder.svg?height=250&width=400",
+  //     time: "20 mins",
+  //     servings: 2,
+  //     difficulty: "Easy",
+  //     calories: 280,
+  //     tags: ["Quick", "Asian", "Low-Calorie"],
+  //     description: "A quick and healthy stir fry that's perfect for using up vegetables before they spoil.",
+  //     ingredients: [
+  //       "1 bell pepper, sliced",
+  //       "1 zucchini, sliced",
+  //       "1 small eggplant, diced",
+  //       "1 onion, sliced",
+  //       "2 cloves garlic, minced",
+  //       "1 tbsp soy sauce",
+  //       "1 tbsp vegetable oil",
+  //       "1 tsp sesame oil",
+  //       "1 tsp ginger, grated",
+  //       "Red pepper flakes to taste",
+  //     ],
+  //     instructions: [
+  //       "Heat vegetable oil in a wok or large skillet over high heat.",
+  //       "Add onions and garlic, stir fry for 1 minute.",
+  //       "Add eggplant and cook for 3 minutes.",
+  //       "Add bell peppers and zucchini, stir fry for 2 minutes.",
+  //       "Add soy sauce, ginger, and red pepper flakes.",
+  //       "Cook for another 2 minutes until vegetables are tender-crisp.",
+  //       "Drizzle with sesame oil before serving.",
+  //       "Serve over rice or noodles.",
+  //     ],
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Mediterranean Vegetable Soup",
+  //     image: "/placeholder.svg?height=250&width=400",
+  //     time: "35 mins",
+  //     servings: 6,
+  //     difficulty: "Easy",
+  //     calories: 220,
+  //     tags: ["Mediterranean", "Soup", "Healthy"],
+  //     description: "A hearty vegetable soup that's perfect for using up vegetables that are starting to wilt.",
+  //     ingredients: [
+  //       "2 tomatoes, diced",
+  //       "1 onion, chopped",
+  //       "1 bell pepper, chopped",
+  //       "1 zucchini, diced",
+  //       "1/2 eggplant, diced",
+  //       "2 cloves garlic, minced",
+  //       "4 cups vegetable broth",
+  //       "1 can (15 oz) chickpeas, drained",
+  //       "1 tsp dried oregano",
+  //       "1 tsp dried basil",
+  //       "2 tbsp olive oil",
+  //       "Salt and pepper to taste",
+  //       "Fresh parsley for garnish",
+  //     ],
+  //     instructions: [
+  //       "Heat olive oil in a large pot over medium heat.",
+  //       "Add onions and garlic, sauté until soft.",
+  //       "Add bell peppers, zucchini, and eggplant. Cook for 5 minutes.",
+  //       "Add tomatoes, vegetable broth, chickpeas, oregano, and basil.",
+  //       "Bring to a boil, then reduce heat and simmer for 20 minutes.",
+  //       "Season with salt and pepper to taste.",
+  //       "Garnish with fresh parsley before serving.",
+  //       "Serve with crusty bread.",
+  //     ],
+  //   },
+  // ]
 
+
+  //const advice = useDataStore((state : any) => state.advice);
+
+  // const advice = useDataStore((state : any) => state.advice);
+  
+  
   const advice = [
     {
       title: "Storage Tips",
@@ -167,8 +199,54 @@ export default function ResultsPage() {
       ],
     },
   ]
+    
+  const getRandomNumber = (min: number, max: number): number => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
-  const [selectedRecipe, setSelectedRecipe] = useState(recipes[0])
+  const getImage = async(food : string, orientation: string) => {
+    const result = await axios.get(`https://api.unsplash.com/search/photos?query=${food}&client_id=pxlmlb-GuT3JdOD07V4YMfG3OjQZQ8ursRI-Nge3_Mc&orientation=${orientation}`);
+    return result.data.results[getRandomNumber(0, 4)]?.urls?.regular
+  }
+  const [imageMap, setImageMap] = useState<Record<string, string>>({});
+  
+  useEffect(() => {
+    const fetchImages = async () => {
+      const titles = [...new Set(recipes.map((r : any) => r.title))];
+      const newImageMap: Record<string, string> = {};
+      await Promise.all(
+        titles.map(async (title: any) => {
+          try {
+            const img = await getImage(title, "landscape");
+            newImageMap[title] = img;
+          } catch (error) {
+            console.log(error)
+            newImageMap[title] = "/placeholder.svg";
+          }
+        })
+      );
+
+      setImageMap(newImageMap);
+    };
+
+    fetchImages();
+  }, []);
+
+  const [imgHead, setHeadimg] = useState("")
+  useEffect(() => {
+    const fetchHeader = async () => {
+      const prompt = detectedIngredients[0]
+      try {
+        const img = await getImage(prompt, "landscape");
+        setHeadimg(img);
+      } catch (error) {
+        setHeadimg("/placeholder.svg");
+      }
+    }
+    fetchHeader();
+  }, [detectedIngredients]);
+  
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe>(recipes[0]);  
   const [savedRecipes, setSavedRecipes] = useState<number[]>([])
   const [likedRecipes, setLikedRecipes] = useState<number[]>([])
 
@@ -205,7 +283,7 @@ export default function ResultsPage() {
           <div className="flex flex-col md:flex-row gap-6">
             <div className="md:w-1/3">
               <div className="rounded-lg overflow-hidden shadow-md transform transition-transform hover:scale-[1.02] duration-300">
-                <img src={foodImage || "/placeholder.svg"} alt="Uploaded food" className="w-full h-auto" />
+                <img src={imgHead || "/placeholder.svg"} alt="Uploaded food" className="w-full h-auto" />
               </div>
             </div>
             <div className="md:w-2/3">
@@ -218,7 +296,7 @@ export default function ResultsPage() {
               <div className="mb-4">
                 <h2 className="text-lg font-semibold mb-2">Detected Ingredients:</h2>
                 <div className="flex flex-wrap gap-2">
-                  {detectedIngredients.map((ingredient, index) => (
+                  {detectedIngredients.map((ingredient: any, index : any) => (
                     <span
                       key={index}
                       className="px-3 py-1 bg-card rounded-full text-sm font-medium border border-border transition-all duration-300 hover:border-primary hover:bg-primary/5 cursor-pointer"
@@ -238,11 +316,11 @@ export default function ResultsPage() {
 
         <Tabs defaultValue="recipes" className="mb-8" onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-2 mb-8">
-            <TabsTrigger value="recipes" className="text-base">
+            <TabsTrigger value="recipes" className="">
               <ChefHat className="mr-2 h-4 w-4" />
               Recipes
             </TabsTrigger>
-            <TabsTrigger value="advice" className="text-base">
+            <TabsTrigger value="advice" className="">
               <Leaf className="mr-2 h-4 w-4" />
               Food Waste Advice
             </TabsTrigger>
@@ -256,7 +334,7 @@ export default function ResultsPage() {
                   Suggested Recipes
                 </h2>
                 <div className="space-y-4">
-                  {recipes.map((recipe) => (
+                  {recipes.map((recipe : any) => (
                     <Card
                       key={recipe.id}
                       className={`p-4 cursor-pointer transition-all duration-300 ${
@@ -269,7 +347,7 @@ export default function ResultsPage() {
                       <div className="flex gap-4">
                         <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0 shadow-sm">
                           <img
-                            src={recipe.image || "/placeholder.svg"}
+                            src={imageMap[recipe.title] || "/placeholder.svg"}
                             alt={recipe.title}
                             className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                           />
@@ -300,7 +378,7 @@ export default function ResultsPage() {
                 <Card className="overflow-hidden border border-border shadow-lg">
                   <div className="relative h-64 overflow-hidden">
                     <img
-                      src={selectedRecipe.image || "/placeholder.svg"}
+                      src={imageMap[selectedRecipe.title] || "/placeholder.svg"}
                       alt={selectedRecipe.title}
                       className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                     />
@@ -338,7 +416,7 @@ export default function ResultsPage() {
                     </div>
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                       <div className="flex flex-wrap gap-2">
-                        {selectedRecipe.tags.map((tag, index) => (
+                        {selectedRecipe.tags.map((tag : any, index : any) => (
                           <span
                             key={index}
                             className="text-xs px-2 py-1 bg-white/20 backdrop-blur-sm text-white rounded-full"
@@ -394,7 +472,7 @@ export default function ResultsPage() {
                         Ingredients
                       </h3>
                       <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        {selectedRecipe.ingredients.map((ingredient, index) => (
+                        {selectedRecipe.ingredients.map((ingredient : any, index : any) => (
                           <li key={index} className="flex items-start gap-2 group">
                             <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 group-hover:scale-150 transition-transform duration-300"></div>
                             <span className="group-hover:text-primary transition-colors duration-300">
@@ -413,7 +491,7 @@ export default function ResultsPage() {
                         Instructions
                       </h3>
                       <ol className="space-y-4">
-                        {selectedRecipe.instructions.map((instruction, index) => (
+                        {selectedRecipe.instructions.map((instruction : any, index : any) => (
                           <li key={index} className="flex gap-3 group">
                             <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-medium group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
                               {index + 1}
@@ -433,7 +511,7 @@ export default function ResultsPage() {
 
           <TabsContent value="advice" className="mt-0 animate-fade-in">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {advice.map((section, index) => (
+              {advice?.map((section: any, index : any) => (
                 <Card
                   key={index}
                   className="p-6 border border-border shadow-sm hover:shadow-md transition-all duration-300 hover:translate-y-[-5px] group"
@@ -445,7 +523,7 @@ export default function ResultsPage() {
                     {section.title}
                   </h3>
                   <ul className="space-y-3">
-                    {section.content.map((tip, tipIndex) => (
+                    {section.content.map((tip: any, tipIndex : any) => (
                       <li key={tipIndex} className="flex items-start gap-2 group/item">
                         <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 group-hover/item:scale-150 transition-transform duration-300"></div>
                         <span className="text-card-foreground group-hover/item:text-foreground transition-colors duration-300">
@@ -478,6 +556,15 @@ export default function ResultsPage() {
             </div>
           </TabsContent>
         </Tabs>
+
+        <div className="flex justify-center mt-12 mb-8">
+          <Link href="/">
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 text-lg flex items-center gap-2 group">
+              <Recycle className="h-5 w-5 group-hover:rotate-180 transition-transform duration-500" />
+              Recycle
+            </Button>
+          </Link>
+        </div>
       </main>
 
       {/* Feedback Container */}
