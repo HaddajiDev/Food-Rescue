@@ -29,18 +29,18 @@ export function Header() {
 
   const navItems = [
     { name: "Home", href: "/" },
-    { name: "How It Works", href: "#how-it-works" },
+    { name: "How It Works", href: "/#how-it-works" },
     {
       name: "Recipes",
-      href: "#recipes",
+      href: "/recipes",
       children: [
-        { name: "Popular Recipes", href: "#popular" },
-        { name: "Seasonal Recipes", href: "#seasonal" },
-        { name: "Quick Meals", href: "#quick" },
+        { name: "Popular Recipes", href: "/recipes/popular" },
+        { name: "Seasonal Recipes", href: "/recipes/seasonal" },
+        { name: "Quick Meals", href: "/recipes/quick" },
       ],
     },
-    { name: "About", href: "#about" },
-    { name: "Contact", href: "#contact" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
   ]
 
   return (

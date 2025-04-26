@@ -3,10 +3,12 @@ import { Features } from "@/components/features"
 import { HowItWorks } from "@/components/how-it-works"
 import { Footer } from "@/components/footer"
 import { Header } from "@/components/header"
+import { PricingPlans } from "@/components/pricing-plans"
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
+      {/* Header */}
       <Header />
 
       {/* Hero Section */}
@@ -51,13 +53,19 @@ export default function Home() {
         </div>
       </div>
 
-
+      {/* Upload Section */}
       <Upload />
 
+      {/* Features Section */}
       <Features />
 
+      {/* How It Works */}
       <HowItWorks />
 
+      {/* Pricing Plans */}
+      <PricingPlans />
+
+      {/* Footer */}
       <Footer />
     </div>
   )
