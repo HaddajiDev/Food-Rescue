@@ -23,6 +23,7 @@ import { FeedbackContainer } from "@/components/feedback-container"
 import useDataStore from "../../store/DataStore";
 import axios from "axios"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 interface Recipe {
   id: number;
@@ -47,122 +48,13 @@ interface Advice {
 export default function ResultsPage() {
   const [activeTab, setActiveTab] = useState("recipes")
   const [isLoaded, setIsLoaded] = useState(false)
-
+  const router = useRouter()
+  const [isClient, setIsClient] = useState(false)
   const detectedIngredients = useDataStore((state : any) => state.detectedIngredients);
-  console.log(detectedIngredients);
-  const foodImage = "/placeholder.svg?height=300&width=400"
-  // const detectedIngredients = ["Tomatoes", "Onions", "Bell Peppers", "Zucchini", "Eggplant"]
+
 
   const recipes = useDataStore((state : any) => state.recipes);
-  // const recipes = [
-  //   {
-  //     id: 1,
-  //     title: "Ratatouille",
-  //     image: "/placeholder.svg?height=250&width=400",
-  //     time: "45 mins",
-  //     servings: 4,
-  //     difficulty: "Medium",
-  //     calories: 320,
-  //     tags: ["Vegetarian", "French", "Healthy"],
-  //     description: "A classic French vegetable stew that's perfect for using up leftover vegetables.",
-  //     ingredients: [
-  //       "2 large tomatoes, diced",
-  //       "1 medium onion, sliced",
-  //       "1 red bell pepper, sliced",
-  //       "1 zucchini, sliced",
-  //       "1 small eggplant, sliced",
-  //       "3 cloves garlic, minced",
-  //       "2 tbsp olive oil",
-  //       "1 tsp dried herbs de Provence",
-  //       "Salt and pepper to taste",
-  //     ],
-  //     instructions: [
-  //       "Preheat oven to 375°F (190°C).",
-  //       "Heat olive oil in a large skillet over medium heat. Add onions and garlic, sauté until soft.",
-  //       "Add bell peppers and cook for 5 minutes.",
-  //       "In a baking dish, arrange the vegetables in alternating layers.",
-  //       "Drizzle with olive oil and sprinkle with herbs, salt, and pepper.",
-  //       "Cover with foil and bake for 25 minutes.",
-  //       "Remove foil and bake for another 15 minutes until vegetables are tender.",
-  //       "Serve warm as a side dish or main course with crusty bread.",
-  //     ],
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Vegetable Stir Fry",
-  //     image: "/placeholder.svg?height=250&width=400",
-  //     time: "20 mins",
-  //     servings: 2,
-  //     difficulty: "Easy",
-  //     calories: 280,
-  //     tags: ["Quick", "Asian", "Low-Calorie"],
-  //     description: "A quick and healthy stir fry that's perfect for using up vegetables before they spoil.",
-  //     ingredients: [
-  //       "1 bell pepper, sliced",
-  //       "1 zucchini, sliced",
-  //       "1 small eggplant, diced",
-  //       "1 onion, sliced",
-  //       "2 cloves garlic, minced",
-  //       "1 tbsp soy sauce",
-  //       "1 tbsp vegetable oil",
-  //       "1 tsp sesame oil",
-  //       "1 tsp ginger, grated",
-  //       "Red pepper flakes to taste",
-  //     ],
-  //     instructions: [
-  //       "Heat vegetable oil in a wok or large skillet over high heat.",
-  //       "Add onions and garlic, stir fry for 1 minute.",
-  //       "Add eggplant and cook for 3 minutes.",
-  //       "Add bell peppers and zucchini, stir fry for 2 minutes.",
-  //       "Add soy sauce, ginger, and red pepper flakes.",
-  //       "Cook for another 2 minutes until vegetables are tender-crisp.",
-  //       "Drizzle with sesame oil before serving.",
-  //       "Serve over rice or noodles.",
-  //     ],
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Mediterranean Vegetable Soup",
-  //     image: "/placeholder.svg?height=250&width=400",
-  //     time: "35 mins",
-  //     servings: 6,
-  //     difficulty: "Easy",
-  //     calories: 220,
-  //     tags: ["Mediterranean", "Soup", "Healthy"],
-  //     description: "A hearty vegetable soup that's perfect for using up vegetables that are starting to wilt.",
-  //     ingredients: [
-  //       "2 tomatoes, diced",
-  //       "1 onion, chopped",
-  //       "1 bell pepper, chopped",
-  //       "1 zucchini, diced",
-  //       "1/2 eggplant, diced",
-  //       "2 cloves garlic, minced",
-  //       "4 cups vegetable broth",
-  //       "1 can (15 oz) chickpeas, drained",
-  //       "1 tsp dried oregano",
-  //       "1 tsp dried basil",
-  //       "2 tbsp olive oil",
-  //       "Salt and pepper to taste",
-  //       "Fresh parsley for garnish",
-  //     ],
-  //     instructions: [
-  //       "Heat olive oil in a large pot over medium heat.",
-  //       "Add onions and garlic, sauté until soft.",
-  //       "Add bell peppers, zucchini, and eggplant. Cook for 5 minutes.",
-  //       "Add tomatoes, vegetable broth, chickpeas, oregano, and basil.",
-  //       "Bring to a boil, then reduce heat and simmer for 20 minutes.",
-  //       "Season with salt and pepper to taste.",
-  //       "Garnish with fresh parsley before serving.",
-  //       "Serve with crusty bread.",
-  //     ],
-  //   },
-  // ]
 
-
-  //const advice = useDataStore((state : any) => state.advice);
-
-  // const advice = useDataStore((state : any) => state.advice);
-  
   
   const advice = [
     {
@@ -205,8 +97,15 @@ export default function ResultsPage() {
   }
 
   const getImage = async(food : string, orientation: string) => {
-    const result = await axios.get(`https://api.unsplash.com/search/photos?query=${food}&client_id=pxlmlb-GuT3JdOD07V4YMfG3OjQZQ8ursRI-Nge3_Mc&orientation=${orientation}`);
-    return result.data.results[getRandomNumber(0, 4)]?.urls?.regular
+    try{
+      const result = await axios.get(`https://api.unsplash.com/search/photos?query=${food}&client_id=pxlmlb-GuT3JdOD07V4YMfG3OjQZQ8ursRI-Nge3_Mc&orientation=${orientation}`);
+      return result.data.results[getRandomNumber(0, 4)]?.urls?.regular
+    }
+    catch (error){
+      console.log(error)
+      return '/placeholder.svg'
+    }
+
   }
   const [imageMap, setImageMap] = useState<Record<string, string>>({});
   
@@ -268,6 +167,31 @@ export default function ResultsPage() {
     } else {
       setLikedRecipes([...likedRecipes, id])
     }
+  }
+
+
+  useEffect(() => {
+    setIsClient(true)
+    
+    // Check if required data exists
+    if (!detectedIngredients || detectedIngredients.length === 0 || !recipes || recipes.length === 0) {
+      // Redirect to home if no data is available
+      router.push('/')
+      return
+    }
+    
+    setIsLoaded(true)
+  }, [detectedIngredients, recipes, router])
+  
+  
+  if (!isClient || !isLoaded) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-lg">Loading...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
