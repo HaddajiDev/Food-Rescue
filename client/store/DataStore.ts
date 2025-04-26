@@ -1,27 +1,29 @@
-import {create} from "zustand"; 
-import instanceAxios from "../lib/axios";
+import { create } from "zustand"
+import instanceAxios from "../lib/axios"
 
 instanceAxios.defaults.withCredentials = false
-const useDataStore = create((set, get)=>({
-    detectedIngredients: [],
-    recipes: [],
-    advice: [],
+const useDataStore = create((set, get) => ({
+  detectedIngredients: [],
+  recipes: [],
+  advice: [],
+  compostData: null,
+  handleData: async (file: File, mode: any) => {
+    try {
+      const formData = new FormData()
+      formData.append("file", file)
 
+      const result = await instanceAxios.post(`/data?mode=${mode}`, formData)
+      set({ detectedIngredients: result.data.detectedIngredients })
+      set({ recipes: result.data.recipes })
+      set({ advice: result.data.advice })
 
-    handleData: async(file :File, mode: any) => {
-        try {
-            const formData = new FormData();
-            formData.append("file", file);
+      if (mode === "leftovers") {
+        set({ compostData: result.data.compostData })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+}))
 
-            const result = await instanceAxios.post(`/data?mode=${mode}`, formData);
-            set( {detectedIngredients : result.data.detectedIngredients} );
-            set( {recipes : result.data.recipes} );
-            set( {advice : result.data.advice} );
-        } catch (error) {
-            console.log(error);
-        }
-    },
-
-}));
-
-export default useDataStore;
+export default useDataStore

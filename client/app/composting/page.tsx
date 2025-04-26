@@ -15,16 +15,15 @@ export default function CompostingPage() {
   const compostData = {
     fruitAndVegetableLovers: {
       vegetables: [
-        "Peppers",
-        "Carrots",
-        "Broccoli",
-        "Garlic",
-        "Brussels Sprouts",
-        "Onion",
-        "Cucumber",
-        "Sweet Potato",
-        "Potato",
-        "Avocado",
+        {Name: "Peppers", image: "https://images.unsplash.com/photo-1526470303-82c787d88682?q=80&w=1532&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
+        {Name : "Carrots", image: "https://images.unsplash.com/photo-1729292993549-a74a67e69c2a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Q2Fycm90c3xlbnwwfDJ8MHx8fDI%3D"},
+        {Name : "Broccoli", image: "https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8QnJvY2NvbGl8ZW58MHwyfDB8fHwy"},
+        {Name : "Garlic", image: "https://images.unsplash.com/photo-1441861539200-6208cf4a122f?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
+        {Name : "Brussels Sprouts", image : "https://images.unsplash.com/photo-1571159400828-9ee6beeb3f4a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8QnJ1c3NlbHMlMjBTcHJvdXRzfGVufDB8MnwwfHx8Mg%3D%3D"},
+        {Name : "Onion", image: "https://images.unsplash.com/photo-1587049633312-d628ae50a8ae?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
+        {Name : "Cucumber", image : "https://images.unsplash.com/photo-1587411768638-ec71f8e33b78?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Q3VjdW1iZXJ8ZW58MHwyfDB8fHwy"},
+        {Name : "Sweet Potato", image : "https://images.unsplash.com/photo-1617130094141-532436117aa1?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
+        {Name : "Avocado", image: "https://images.unsplash.com/photo-1543363136-7fbfcd3b240d?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
       ],
       rootCrops: ["Carrots", "Sweet Potato", "Potato"],
     },
@@ -71,28 +70,28 @@ export default function CompostingPage() {
       description:
         "Select a compost bin that fits your space. Options include enclosed bins, tumblers, or simple open piles for larger yards.",
       icon: <Trash2 className="h-8 w-8 text-primary" />,
-      image: "/placeholder.svg?height=200&width=300",
+      image: "https://images.unsplash.com/photo-1582788566288-c40777c4f4e5?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       title: "Layer Materials",
       description:
         "Start with a layer of browns (carbon-rich), then add greens (nitrogen-rich). Aim for a ratio of about 3 parts brown to 1 part green.",
       icon: <Leaf className="h-8 w-8 text-primary" />,
-      image: "/placeholder.svg?height=200&width=300",
+      image: "https://images.unsplash.com/photo-1694610882150-4de206edf95a?q=80&w=1422&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       title: "Add Water",
       description:
         "Keep your compost as moist as a wrung-out sponge. Too dry and decomposition slows; too wet and it becomes smelly.",
       icon: <Sprout className="h-8 w-8 text-primary" />,
-      image: "/placeholder.svg?height=200&width=300",
+      image: "https://images.unsplash.com/photo-1722773129561-472ba62e44a0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTl8fHdhdGVyaW5nfGVufDB8MnwwfHx8Mg%3D%3D",
     },
     {
       title: "Turn Regularly",
       description:
         "Mix or turn your compost every few weeks to aerate it. This speeds decomposition and prevents odors.",
       icon: <ArrowRight className="h-8 w-8 text-primary" />,
-      image: "/placeholder.svg?height=200&width=300",
+      image: "https://images.unsplash.com/photo-1668959515747-d9e3e92439b4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8c2hvdmVsJTIwZ2FyZGVufGVufDB8MnwwfHx8Mg%3D%3D",
     },
   ]
 
@@ -298,21 +297,21 @@ export default function CompostingPage() {
                   </p>
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-                    {compostData.fruitAndVegetableLovers.vegetables.map((vegetable, index) => (
+                    {compostData.fruitAndVegetableLovers.vegetables.map((vegetable : any, index : any) => (
                       <div
                         key={index}
                         className="bg-muted/30 rounded-lg p-4 text-center hover:bg-primary/10 transition-colors duration-300 border border-border"
                       >
                         <div className="w-16 h-16 mx-auto mb-3 rounded-full overflow-hidden bg-primary/5 flex items-center justify-center">
                           <img
-                            src={`/placeholder.svg?height=100&width=100&text=${vegetable}`}
-                            alt={vegetable}
+                            src={vegetable.image}
+                            alt={vegetable.Name}
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <h4 className="font-medium">{vegetable}</h4>
+                        <h4 className="font-medium">{vegetable.Name}</h4>
                         <p className="text-xs text-muted-foreground mt-1">
-                          {compostData.fruitAndVegetableLovers.rootCrops.includes(vegetable)
+                          {compostData.fruitAndVegetableLovers.rootCrops.includes(vegetable.Name)
                             ? "Root crop"
                             : "Vegetable"}
                         </p>
@@ -385,7 +384,7 @@ export default function CompostingPage() {
                 </div>
                 <div className="bg-card rounded-lg overflow-hidden border border-border shadow-md">
                   <img
-                    src="/placeholder.svg?height=300&width=600&text=Composting+Process"
+                    src="https://images.unsplash.com/photo-1663271589031-9a1a4507cbb9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Q29tcG9zdGluZ3xlbnwwfDJ8MHx8fDI%3Ds"
                     alt="Composting process diagram"
                     className="w-full h-64 object-cover"
                   />
@@ -537,26 +536,7 @@ export default function CompostingPage() {
                 </div>
               </Card>
 
-              <div className="bg-primary/5 rounded-lg p-6 border border-primary/20">
-                <div className="flex flex-col md:flex-row gap-6 items-center">
-                  <div className="md:w-1/3">
-                    <img
-                      src="/placeholder.svg?height=200&width=200&text=Compost+Expert"
-                      alt="Composting expert"
-                      className="rounded-full w-32 h-32 mx-auto object-cover border-4 border-primary/20"
-                    />
-                  </div>
-                  <div className="md:w-2/3">
-                    <h3 className="text-xl font-semibold mb-3">Expert Tip</h3>
-                    <p className="text-muted-foreground italic mb-4">
-                      "If your compost pile seems to be taking too long, try the 'lasagna method' - alternate thin
-                      layers of green and brown materials, and make sure everything is chopped into small pieces. This
-                      creates ideal conditions for decomposition and can speed up the process significantly."
-                    </p>
-                    <p className="font-medium">- Maria Rodriguez, Master Composter</p>
-                  </div>
-                </div>
-              </div>
+              
             </TabsContent>
           </Tabs>
         </div>

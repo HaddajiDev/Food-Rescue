@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card"
 import { UploadIcon, Camera, Loader2, X, Salad, UtensilsCrossed } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import useDataStore from "../store/DataStore";
+import useDataStore from "../store/DataStore"
 
 export function Upload() {
   const router = useRouter()
@@ -21,7 +21,7 @@ export function Upload() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  const { handleData }: any = useDataStore();
+  const { handleData }: any = useDataStore()
 
   useEffect(() => {
     return () => {
@@ -68,7 +68,7 @@ export function Upload() {
     }
   }
 
-  const simulateUpload = async(file: File) => {
+  const simulateUpload = async (file: File) => {
     setIsUploading(true)
 
     const reader = new FileReader()
@@ -76,10 +76,22 @@ export function Upload() {
       setPreview(reader.result as string)
     }
     reader.readAsDataURL(file)
-    await handleData(file);
+    await handleData(file, uploadMode)
     sessionStorage.setItem("uploadMode", uploadMode)
     setIsUploading(false)
-    router.push("/results")
+
+    // Redirect based on upload mode
+    if (uploadMode === "leftovers") {
+      // Check if the user wants to see composting options
+      const showCompostOptions = Math.random() > 0.5 // In a real app, this would be based on user preference or AI detection
+      if (showCompostOptions) {
+        router.push("/compose")
+      } else {
+        router.push("/results")
+      }
+    } else {
+      router.push("/results")
+    }
   }
 
   const activateCamera = async () => {
@@ -138,7 +150,7 @@ export function Upload() {
   const getUploadModeText = () => {
     return uploadMode === "ingredients"
       ? "Upload a clear image of your ingredients for recipe suggestions."
-      : "Upload a photo of your leftover meal to get creative reuse ideas."
+      : "Upload a photo of your leftover meal to get creative reuse ideas and composting options."
   }
 
   return (

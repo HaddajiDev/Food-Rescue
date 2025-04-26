@@ -22,7 +22,7 @@ router.post('/data', upload.single('file'), async(req, res) => {
         const ingredients = req.body.ingredients;
         const fileCloud = await uploadToCloudinary(file);
         
-        const response = null;
+        let response = null;
         if(mode === "ingredients"){
             response = await GetData(fileCloud.secure_url);
         }

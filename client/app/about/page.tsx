@@ -54,7 +54,7 @@ export default function AboutPage() {
             </div>
             <div className="rounded-xl overflow-hidden shadow-lg">
               <img
-                src="/placeholder.svg?height=400&width=600"
+                src="https://images.unsplash.com/photo-1471970394675-613138e45da3?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Team working on food waste solutions"
                 className="w-full h-auto"
               />
@@ -112,22 +112,22 @@ export default function AboutPage() {
               {
                 name: "Ahmed Haddaji",
                 role: "Developer",
-                image: "/placeholder.svg?height=300&width=300",
+                image: "https://avatars.githubusercontent.com/u/137641951?v=4",
               },
               {
                 name: "Ghaith Belhassen",
                 role: "Developer",
-                image: "/placeholder.svg?height=300&width=300",
+                image: "https://res.cloudinary.com/dqkvgv7mh/image/upload/v1745704729/wsqmjc6qgmk659nsygbc.png",
               },
               {
                 name: "Imed Edine Amara",
                 role: "Developer",
-                image: "/placeholder.svg?height=300&width=300",
+                image: "https://res.cloudinary.com/dqkvgv7mh/image/upload/v1745704536/kjlnvgf7f99vsufeonaf.png",
               },
               {
                 name: "Mohamed Hachem Ftirich",
-                role: "Designer",
-                image: "/placeholder.svg?height=300&width=300",
+                role: "Nigger",
+                image: "https://res.cloudinary.com/dqkvgv7mh/image/upload/v1745704973/yit582kv8mru0jp9f0tk.png",
               },
             ].map((member, index) => (
               <div key={index} className="text-center">
@@ -181,7 +181,7 @@ export default function AboutPage() {
             </div>
             <div className="order-1 md:order-2 rounded-xl overflow-hidden shadow-lg">
               <img
-                src="/placeholder.svg?height=400&width=600"
+                src="https://images.unsplash.com/photo-1617839625591-e5a789593135?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="FoodRescue technology visualization"
                 className="w-full h-auto"
               />
