@@ -39,6 +39,7 @@ export function Header() {
         { name: "Quick Meals", href: "/recipes/quick" },
       ],
     },
+    { name: "Composting", href: "/composting" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ]

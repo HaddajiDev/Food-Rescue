@@ -27,7 +27,7 @@ router.post('/data', upload.single('file'), async(req, res) => {
             response = await GetData(fileCloud.secure_url);
         }
         else{
-            response = await GetDataLeftOvers(ingredients);
+            response = await GetDataLeftOvers(fileCloud.secure_url);
         }
         res.send(response);
     } catch (error) {
@@ -35,13 +35,27 @@ router.post('/data', upload.single('file'), async(req, res) => {
     }
 });
 
-async function GetDataLeftOvers(ingredients) {    
-    const user = {role: "user", content: ingredients};
+router.get('/over', async(req, res) =>{
+    try {
+        const response = await GetDataLeftOvers("https://images.unsplash.com/photo-1590779033100-9f60a05a013d?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+        res.send(response);
+    } catch (error) {
+        
+    }
+})
+
+async function GetDataLeftOvers(url) {    
+    const content = [{type : 'text', text: ""}, {type : 'image_url', image_url: url}];
+
+    const user = {
+        role: "user",
+        content: content
+    }
 
     const messages = [
-        {role: 'system', content: process.env.PROMPT},
+        {role: 'system', content: process.env.PROMPT_2},
         user
-    ];
+    ]
 
     const completion = await client.chat.completions.create({
         model: "google/gemini-2.0-flash-exp:free",
