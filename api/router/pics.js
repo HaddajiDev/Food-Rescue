@@ -18,18 +18,12 @@ const client = new OpenAI({
 router.post('/data', upload.single('file'), async(req, res) => {
     try {
         const file = req.file;
-        const mode = req.query.mode;
-        const ingredients = req.body.ingredients;
         const fileCloud = await uploadToCloudinary(file);
         
-        let response = null;
-        if(mode === "ingredients"){
-            response = await GetData(fileCloud.secure_url);
-        }
-        else{
-            response = await GetDataLeftOvers(fileCloud.secure_url);
-        }
+        const response = await GetData(fileCloud.secure_url);
+
         res.send(response);
+        
     } catch (error) {
         console.log(error)
     }
@@ -70,6 +64,7 @@ async function GetDataLeftOvers(url) {
 
 
 async function GetData(url){
+    console.log(url);
     const content = [{type : 'text', text: ""}, {type : 'image_url', image_url: url}];
 
     const user = {

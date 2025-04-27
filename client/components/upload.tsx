@@ -76,22 +76,20 @@ export function Upload() {
       setPreview(reader.result as string)
     }
     reader.readAsDataURL(file)
-    await handleData(file, uploadMode)
-    sessionStorage.setItem("uploadMode", uploadMode)
-    setIsUploading(false)
+    
+    
 
-    // Redirect based on upload mode
     if (uploadMode === "leftovers") {
-      // Check if the user wants to see composting options
-      const showCompostOptions = Math.random() > 0.5 // In a real app, this would be based on user preference or AI detection
-      if (showCompostOptions) {
+      setTimeout(() => {
         router.push("/compose")
-      } else {
-        router.push("/results")
-      }
+      }, 5000);
+      
     } else {
+      await handleData(file)
       router.push("/results")
     }
+
+    setIsUploading(false)
   }
 
   const activateCamera = async () => {
