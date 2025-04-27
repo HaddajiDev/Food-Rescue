@@ -278,7 +278,7 @@ export function Upload() {
                       Processing...
                     </>
                   ) : (
-                    "Get Recipes"
+                     <>{uploadMode === "ingredients" ? "Get Recipes" : "Get Compose"}</>
                   )}
                 </Button>
               </div>
