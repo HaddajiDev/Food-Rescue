@@ -74,6 +74,7 @@ export function Header() {
           >
             FoodRescue
           </span>
+          <span>🇵🇸</span>
         </div>
 
         <nav className="hidden md:flex items-center gap-1 lg:gap-2">

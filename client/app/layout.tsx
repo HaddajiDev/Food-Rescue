@@ -6,9 +6,8 @@ import { ThemeProvider } from "@/components/theme-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: "FoodRescue - Reduce Food Waste with AI-Powered Recipes",
+  title: "Food Rescue",
   description: "Upload photos of your food and get AI-generated recipes to reduce waste and save money.",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({
