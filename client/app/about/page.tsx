@@ -126,7 +126,7 @@ export default function AboutPage() {
               },
               {
                 name: "Mohamed Hachem Ftirich",
-                role: "Nigger",
+                role: "Desinger",
                 image: "https://res.cloudinary.com/dqkvgv7mh/image/upload/v1745704973/yit582kv8mru0jp9f0tk.png",
               },
             ].map((member, index) => (

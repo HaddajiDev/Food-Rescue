@@ -69,7 +69,7 @@ export function Upload() {
   }
 
   const simulateUpload = async (file: File) => {
-    setIsUploading(true)
+    setIsUploading(true);
 
     const reader = new FileReader()
     reader.onload = () => {
@@ -80,6 +80,7 @@ export function Upload() {
     
 
     if (uploadMode === "leftovers") {
+      setIsUploading(true);
       setTimeout(() => {
         router.push("/compose")
       }, 5000);
