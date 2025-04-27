@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instanceAxios = axios.create({
-    baseURL: "http://localhost:2000",
+    baseURL: "https://food-rescue-server-virid.vercel.app",
     withCredentials: true
 });
 
