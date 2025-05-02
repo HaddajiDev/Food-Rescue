@@ -7,7 +7,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: ["https://foodrescue-1.vercel.app/", "https://food-rescue-server-virid.vercel.app"],
+    origin: "*",
+    credentials: true
 }));
 
 
