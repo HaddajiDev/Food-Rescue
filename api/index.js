@@ -5,10 +5,19 @@ const cors = require('cors');
 const app = express();
 
 app.use(cors({
-    origin: ['https://foodrescue-1.vercel.app', 'http://localhost:3000'],
+    origin: [
+        'https://foodrescue-1.vercel.app', 
+        'http://localhost:3000'
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
+    allowedHeaders: [
+        'Origin', 
+        'X-Requested-With', 
+        'Content-Type', 
+        'Accept', 
+        'Authorization'
+    ]
 }));
 
 app.use(express.json());

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+router.use(require('cors')()); 
 const OpenAI = require('openai');
 const multer = require('multer');
 const cloudinary = require('../lib/cloudinary');
