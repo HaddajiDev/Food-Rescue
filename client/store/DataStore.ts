@@ -13,7 +13,11 @@ const useDataStore = create((set, get)=>({
             const formData = new FormData();
             formData.append("file", file);
 
-            const result = await instanceAxios.post(`/get/data`, formData);
+            const result = await instanceAxios.post(`/get/data`, formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                }
+            });
             set( {detectedIngredients : result.data.detectedIngredients} );
             set( {recipes : result.data.recipes} );
             set( {advice : result.data.advice} );
