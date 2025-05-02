@@ -17,8 +17,11 @@ const client = new OpenAI({
 
 router.post('/data', upload.single('file'), async(req, res) => {
     try {
-
-        res.header('Access-Control-Allow-Origin', 'https://foodrescue-1.vercel.app');
+        // Updated to allow both production and local development origins
+        const origin = req.headers.origin;
+        if (origin === 'https://foodrescue-1.vercel.app' || origin === 'http://localhost:3000') {
+            res.header('Access-Control-Allow-Origin', origin);
+        }
         res.header('Access-Control-Allow-Credentials', 'true');
 
         const file = req.file;
@@ -29,7 +32,8 @@ router.post('/data', upload.single('file'), async(req, res) => {
         res.send(response);
         
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        res.status(500).send({ error: 'An error occurred while processing your request' });
     }
 });
 
@@ -38,9 +42,10 @@ router.get('/over', async(req, res) =>{
         const response = await GetDataLeftOvers("https://images.unsplash.com/photo-1590779033100-9f60a05a013d?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
         res.send(response);
     } catch (error) {
-        
+        console.log(error);
+        res.status(500).send({ error: 'An error occurred while processing your request' });
     }
-})
+});
 
 async function GetDataLeftOvers(url) {    
     const content = [{type : 'text', text: ""}, {type : 'image_url', image_url: url}];
@@ -56,7 +61,7 @@ async function GetDataLeftOvers(url) {
     ]
 
     const completion = await client.chat.completions.create({
-        model: "google/gemini-2.0-flash-exp:free",
+        model: "google/learnlm-1.5-pro-experimental:free",
         messages: messages,
         response_format: { type: "json_object" }
     });
@@ -65,11 +70,9 @@ async function GetDataLeftOvers(url) {
     return aiResponse;
 }
 
-
-
 async function GetData(url){
     console.log(url);
-    const content = [{type : 'text', text: ""}, {type : 'image_url', image_url: url}];
+    const content = [{type : 'text', text: "get me some recipes"}, {type : 'image_url', image_url: url}];
 
     const user = {
         role: "user",
@@ -82,15 +85,14 @@ async function GetData(url){
     ]
 
     const completion = await client.chat.completions.create({
-        model: "google/gemini-2.0-flash-exp:free",
+        model: "google/learnlm-1.5-pro-experimental:free",
         messages: messages,
         response_format: { type: "json_object" }
     });
 
     const aiResponse = completion.choices[0].message.content;
-    return aiResponse;
+    return JSON.parse(aiResponse);
 }
-
 
 async function uploadToCloudinary(file){
     return new Promise((resolve, reject) => {

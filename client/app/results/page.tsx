@@ -43,19 +43,15 @@ interface Advice {
   content: string[];
 }
 
-
-
 export default function ResultsPage() {
   const [activeTab, setActiveTab] = useState("recipes")
   const [isLoaded, setIsLoaded] = useState(false)
   const router = useRouter()
   const [isClient, setIsClient] = useState(false)
   const detectedIngredients = useDataStore((state : any) => state.detectedIngredients);
-
-
   const recipes = useDataStore((state : any) => state.recipes);
 
-  
+  console.log(recipes);
   const advice = [
     {
       title: "Storage Tips",
@@ -105,12 +101,14 @@ export default function ResultsPage() {
       console.log(error)
       return '/placeholder.svg'
     }
-
   }
+  
   const [imageMap, setImageMap] = useState<Record<string, string>>({});
   
   useEffect(() => {
     const fetchImages = async () => {
+      if (!recipes || recipes.length === 0) return;
+      
       const titles = [...new Set(recipes.map((r : any) => r.title))];
       const newImageMap: Record<string, string> = {};
       await Promise.all(
@@ -129,11 +127,13 @@ export default function ResultsPage() {
     };
 
     fetchImages();
-  }, []);
+  }, [recipes]);
 
   const [imgHead, setHeadimg] = useState("")
   useEffect(() => {
     const fetchHeader = async () => {
+      if (!detectedIngredients || detectedIngredients.length === 0) return;
+      
       const prompt = detectedIngredients[0]
       try {
         const img = await getImage(prompt, "landscape");
@@ -145,9 +145,15 @@ export default function ResultsPage() {
     fetchHeader();
   }, [detectedIngredients]);
   
-  const [selectedRecipe, setSelectedRecipe] = useState<Recipe>(recipes[0]);  
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);  
   const [savedRecipes, setSavedRecipes] = useState<number[]>([])
   const [likedRecipes, setLikedRecipes] = useState<number[]>([])
+
+  useEffect(() => {
+    if (recipes && recipes.length > 0) {
+      setSelectedRecipe(recipes[0]);
+    }
+  }, [recipes]);
 
   useEffect(() => {
     setIsLoaded(true)
@@ -169,13 +175,9 @@ export default function ResultsPage() {
     }
   }
 
-
   useEffect(() => {
-    setIsClient(true)
-    
-    // Check if required data exists
+    setIsClient(true)    
     if (!detectedIngredients || detectedIngredients.length === 0 || !recipes || recipes.length === 0) {
-      // Redirect to home if no data is available
       router.push('/')
       return
     }
@@ -183,12 +185,21 @@ export default function ResultsPage() {
     setIsLoaded(true)
   }, [detectedIngredients, recipes, router])
   
-  
   if (!isClient || !isLoaded) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <p className="text-lg">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!selectedRecipe) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-lg">Loading recipe details...</p>
         </div>
       </div>
     )
