@@ -24,7 +24,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
 
 
-app.options('*', cors());
 
 app.use('/get', require('./router/pics'));
 app.get("/", (req, res) => res.send("Working"));

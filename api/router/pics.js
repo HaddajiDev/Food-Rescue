@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-router.use(require('cors')()); 
 const OpenAI = require('openai');
 const multer = require('multer');
 const cloudinary = require('../lib/cloudinary');
@@ -18,6 +17,10 @@ const client = new OpenAI({
 
 router.post('/data', upload.single('file'), async(req, res) => {
     try {
+
+        res.header('Access-Control-Allow-Origin', 'https://foodrescue-1.vercel.app');
+        res.header('Access-Control-Allow-Credentials', 'true');
+
         const file = req.file;
         const fileCloud = await uploadToCloudinary(file);
         
