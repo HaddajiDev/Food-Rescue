@@ -37,7 +37,7 @@ export default function Home() {
             <div className="md:w-1/2 animate-fade-in">
               <div className="relative rounded-2xl overflow-hidden shadow-xl">
                 <img
-                  src="https://videos.openai.com/vg-assets/assets%2Ftask_01jsmxwq4ef99tjp3xjqv9qdqp%2Fimg_0.webp?st=2025-04-26T11%3A45%3A39Z&se=2025-05-02T12%3A45%3A39Z&sks=b&skt=2025-04-26T11%3A45%3A39Z&ske=2025-05-02T12%3A45%3A39Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=8ebb0df1-a278-4e2e-9c20-f2d373479b3a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=f5lrc27MKga4b1a5zYctdSjIjCen9NRYp3yCGLrmgLk%3D&az=oaivgprodscus"
+                  src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                   alt="Food waste reduction concept"
                   className="w-full h-auto"
                 />
