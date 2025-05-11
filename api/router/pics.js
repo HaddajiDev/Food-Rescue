@@ -91,7 +91,8 @@ async function GetData(url){
     });
 
     const aiResponse = completion.choices[0].message.content;
-    return JSON.parse(aiResponse);
+    const finalResponse = aiResponse.replace(/```json|```/g, '');
+    return JSON.parse(finalResponse);
 }
 
 async function uploadToCloudinary(file){
